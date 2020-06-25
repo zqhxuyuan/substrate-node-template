@@ -254,7 +254,7 @@ parameter_types! {
 }
 
 impl transaction_payment::Trait for Runtime {
-	type Currency = SpendingAssetCurrency<Self>; //Self == Module<Runtime> ?
+	type Currency = SpendingAssetCurrency<Self>;
 	type OnTransactionPayment = ();
 	type TransactionByteFee = TransactionByteFee;
 	type WeightToFee = IdentityFee<Balance>;
@@ -282,9 +282,9 @@ construct_runtime!(
 		Timestamp: timestamp::{Module, Call, Storage, Inherent},
 		Aura: aura::{Module, Config<T>, Inherent(Timestamp)},
 		Assets: assets::{Module, Call, Storage, Event<T>},
-		Balances: balances::{Module, Call, Storage, Event<T>, Config},
+		Balances: balances::{Module, Call, Storage, Event<T>, Config<T>},
 		Grandpa: grandpa::{Module, Call, Storage, Config, Event},
-		GenericAsset: generic_asset::{Module, Call, Storage, Config, Event<T>},
+		GenericAsset: generic_asset::{Module, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: transaction_payment::{Module, Storage},
 		Sudo: sudo::{Module, Call, Config<T>, Storage, Event<T>},
 		// Used for the module template in `./template.rs`
