@@ -282,6 +282,7 @@ construct_runtime!(
 		Timestamp: timestamp::{Module, Call, Storage, Inherent},
 		Aura: aura::{Module, Config<T>, Inherent(Timestamp)},
 		Assets: assets::{Module, Call, Storage, Event<T>},
+		Balances: balances::{Module, Call, Storage, Event<T>, Config},
 		Grandpa: grandpa::{Module, Call, Storage, Config, Event},
 		GenericAsset: generic_asset::{Module, Call, Storage, Config, Event<T>},
 		TransactionPayment: transaction_payment::{Module, Storage},
