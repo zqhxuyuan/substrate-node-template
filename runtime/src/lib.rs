@@ -257,9 +257,19 @@ impl sudo::Trait for Runtime {
 	type Call = Call;
 }
 
-/// Configure the pallet template in pallets/template.
-impl template::Trait for Runtime {
-	type Event = Event;
+use frame_support::traits::Get;
+
+impl pallet_1::Trait for Runtime {}
+
+pub struct StorageToConfig;
+impl Get<u32> for StorageToConfig {
+     fn get() -> u32 {
+         return pallet_1::MyStorage::get();
+    }
+}
+
+impl pallet_2::Trait for Runtime {
+	type MyConfig = StorageToConfig;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -278,7 +288,8 @@ construct_runtime!(
 		TransactionPayment: transaction_payment::{Module, Storage},
 		Sudo: sudo::{Module, Call, Config<T>, Storage, Event<T>},
 		// Include the custom logic from the template pallet in the runtime.
-		TemplateModule: template::{Module, Call, Storage, Event<T>},
+		Pallet1: pallet_1::{Module, Call, Storage},
+		Pallet2: pallet_2::{Module, Call},
 	}
 );
 
