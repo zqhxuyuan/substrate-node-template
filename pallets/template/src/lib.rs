@@ -107,7 +107,7 @@ decl_module! {
 pub mod migration {
 	use super::*;
 
-	mod deprecated {
+	pub mod deprecated {
 		use crate::Trait;
 		use frame_support::{decl_module, decl_storage};
 		use sp_std::prelude::*;
@@ -125,6 +125,7 @@ pub mod migration {
 	pub fn migrate_to_struct<T: Trait>() -> Weight {
 		debug::RuntimeLogger::init();
 
+		// only run the migration if the version is not up to date
 		if PalletVersion::get() == StorageVersion::V1_u32 {
 			debug::info!("storage updated");
 			let something = deprecated::Something::take();
