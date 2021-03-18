@@ -1,3 +1,10 @@
+# SOLUTION Additional to base template:
+
+## For use with the [Start a Private Network Tutorial](https://substrate.dev/docs/en/tutorials/start-a-private-network/) using Substrate v3.0.0
+
+- A [customSpec.json](./customSpec.json) and [customSpecRaw.json](./customSpecRaw.json) generated as instructed.
+- An additional [key-insert/insert-keys.sh](./key-insert/insert-keys.sh) executable is added with JSON files to add both AURA and GRANDPA keys to `node01` and `node02` (Both nodes must be up and running for this to insert keys successfully)
+
 # Substrate Node Template
 
 A fresh FRAME-based [Substrate](https://www.substrate.io/) node, ready for hacking :rocket:
