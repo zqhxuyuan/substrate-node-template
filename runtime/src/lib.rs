@@ -265,7 +265,7 @@ impl pallet_template::Config for Runtime {
 }
 
 /// Configure the runtime's implementation of the Scheduler pallet.
-impl pallet_scheduler::Trait for Runtime {
+impl pallet_scheduler::Config for Runtime {
 	type Event = Event;
 	type Origin = Origin;
 	type PalletsOrigin = OriginCaller;
@@ -276,9 +276,9 @@ impl pallet_scheduler::Trait for Runtime {
 	type WeightInfo = ();
 }
 
-/// Define the types required by the Scheduler pallet.
+// Define the types required by the Scheduler pallet.
 parameter_types! {
-	pub MaximumSchedulerWeight: Weight = Perbill::from_percent(80) * MaximumBlockWeight::get();
+	pub MaximumSchedulerWeight: Weight = 10_000_000;
 	pub const MaxScheduledPerBlock: u32 = 50;
 }
 
