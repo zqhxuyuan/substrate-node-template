@@ -27,6 +27,7 @@ pub mod pallet {
 		ClaimCreated(T::AccountId, Vec<u8>),
 		/// Event emitted when a claim is revoked by the owner. [who, claim]
 		ClaimRevoked(T::AccountId, Vec<u8>),
+		ClaimTransfered(T::AccountId, T::AccountId, Vec<u8>),
 	}
 
 	#[pallet::error]
@@ -104,6 +105,32 @@ pub mod pallet {
 
 			// Emit an event that the claim was erased.
 			Self::deposit_event(Event::ClaimRevoked(sender, proof));
+
+			Ok(().into())
+		}
+
+		/// transfer proof owner by origin, to target account
+		#[pallet::weight(10_000)]
+		fn transfer_claim(
+			origin: OriginFor<T>,
+			to: T::AccountId,
+			proof: Vec<u8>,
+		) -> DispatchResultWithPostInfo {
+			let sender = ensure_signed(origin)?;
+
+			// 发送方必须有这个存证，并且是存证的拥有者
+			ensure!(Proofs::<T>::contains_key(&proof), Error::<T>::NoSuchProof);
+			ensure!(sender == owner, Error::<T>::NotProofOwner);
+
+			// 删除发送方的存证
+			Proofs::<T>::remove(&proof);
+
+			// 添加到目标方，存证的拥有者转移给了目标方
+			// todo: 如果目标方已经有存证了，也要报错。不过实际上在创建存证的时候，已经保证了：一个存证，只允许一个拥有者
+			let current_block = <frame_system::Module<T>>::block_number();
+			Proofs::<T>::insert(&proof, (&to, current_block));
+
+			Self::deposit_event(Event::ClaimTransfered(sender, to, proof));
 
 			Ok(().into())
 		}
