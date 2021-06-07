@@ -120,6 +120,7 @@ pub mod pallet {
 
 			// 发送方必须有这个存证，并且是存证的拥有者
 			ensure!(Proofs::<T>::contains_key(&proof), Error::<T>::NoSuchProof);
+			let (owner, _) = Proofs::<T>::get(&proof);
 			ensure!(sender == owner, Error::<T>::NotProofOwner);
 
 			// 删除发送方的存证
